@@ -25,27 +25,11 @@ GLfloat mat_diffuse[] = { 0.8f, 0.8f, 0.8f, 1.0f };
 GLfloat mat_shininess[] = { 50.0f };
 
 bool LoadBMP(const char* filename, GLuint& texture) {
-    if (!filename) {
-        cerr << "Error: Null filename pointer" << endl;
-        return false;
-    }
 
     ifstream file(filename, ios::binary);
-    if (!file) {
-        cerr << "Error: Could not open file " << filename << endl;
-        return false;
-    }
     unsigned char header[54];
     file.read(reinterpret_cast<char*>(header), 54);
-    if (file.gcount() != 54) {
-        cerr << "Error: Not a valid BMP file" << endl;
-        return false;
-    }
 
-    if (header[0] != 'B' || header[1] != 'M') {
-        cerr << "Error: Not a valid BMP file" << endl;
-        return false;
-    }
 
     int dataPos = *(int*)&header[0x0A];
     int imageSize = *(int*)&header[0x22];
@@ -56,10 +40,7 @@ bool LoadBMP(const char* filename, GLuint& texture) {
     if (dataPos == 0) dataPos = 54;
 
     unsigned char* data = new unsigned char[imageSize];
-    if (!data) {
-        cerr << "Error: Memory allocation failed" << endl;
-        return false;
-    }
+
 
     file.seekg(dataPos, ios::beg);
     file.read(reinterpret_cast<char*>(data), imageSize);
@@ -204,7 +185,7 @@ void display() {
     angle += 0.5f;
     if (angle > 360) angle -= 360;
 
-    glRotatef(angle, 0, 0, 1);
+    glRotatef(angle, 0, 1, 0);
     DrawCylinder(1.0f, 3.0f);
 
     glutSwapBuffers();
@@ -218,7 +199,7 @@ int main(int argc, char** argv) {
     glutInit(&argc, argv);
     glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGB | GLUT_DEPTH);
     glutInitWindowSize(1200, 900);
-    glutCreateWindow("Textured Cola Can with Lighting");
+    glutCreateWindow("Cola");
 
     
     LoadBMP("colaside.bmp", texture_side);

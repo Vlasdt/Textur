@@ -173,7 +173,7 @@ void display() {
     if (angle > 360) angle -= 360;
 
     glRotatef(angle, 0, 0, 1);
-    DrawCylinder(1.0f, 2.0f);
+    DrawCylinder(1.0f, 3.0f);
 
     glutSwapBuffers();
 }
